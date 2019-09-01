@@ -8,13 +8,13 @@
  */
 
 function forEach(array, fn) {
-    for (var i = 0; i < array.length; i++) {
+    for (let i = 0; i < array.length; i++) {
         fn(array[i], i, array);
         //console.log(i, array[i]);
     }
 }
-var array = [1, 10, 100, 1000];
-var fn = (item, i, array) => {
+let array = [1, 10, 100, 1000];
+let fn = (item, i, array) => {
 
   return item + 1;
 }
@@ -26,20 +26,20 @@ forEach(array, fn);
  Напишите аналог встроенного метода map для работы с массивами
  Посмотрите как работает map и повторите это поведение для массива, который будет передан в параметре array
  */
-function map(array, fn) {
-  for (var i = 0; i < array.length; i++) {
-    fn(array[i], i, array);
+function map(array, fn1) {
+  let newArr = [];
+  
+  for (let i = 0; i < array.length; i++) { 
+    newArr.push(fn1(array[i], i, array));
   }
+  return newArr;
 }
-var newArr = [];
 
-var fn = (item, i, array) => {
-  newArr[i] = array[i] * 2;
-  //console.log(i, newArr[i], newArr);
-  return item + 1;
-  }
+let fn1 = (item, i, array) => {
+  return item * 2 ;
+  };
 
-map(array, fn);
+map(array, fn1);
 
 /*
  Задание 3:
@@ -47,10 +47,24 @@ map(array, fn);
  Напишите аналог встроенного метода reduce для работы с массивами
  Посмотрите как работает reduce и повторите это поведение для массива, который будет передан в параметре array
  */
-function reduce(array, fn, initial) {
-  
+function reduce(array, fn2, initial ) {
+  let curInx = initial ? 0 : 1
+  let cumm = 0;
+  if (typeof initial != 'number') {
+    cumm = array[0];
+  } else {
+    cumm = initial;
+  }
+  for ( let i = curInx; i < array.length; i++) { 
+      cumm = fn2(cumm, array[i], i, array); 
+  }
+  return cumm;
 }
+let fn2 = (cumm, item, i, array) => {
+  return cumm += item;
+  };
 
+reduce(array, fn2);
 /*
  Задание 4:
 
@@ -60,7 +74,17 @@ function reduce(array, fn, initial) {
    upperProps({ name: 'Сергей', lastName: 'Петров' }) вернет ['NAME', 'LASTNAME']
  */
 function upperProps(obj) {
+  
+  let newObj = [];
+  for (let key in obj) {
+
+    newObj.push(key.toUpperCase());
+  }
+  return newObj;
 }
+
+upperProps({ name: 'Сергей', lastName: 'Петров' });
+
 
 /*
  Задание 5 *:
