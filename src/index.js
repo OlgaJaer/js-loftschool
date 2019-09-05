@@ -1,3 +1,5 @@
+import { brotliDecompressSync } from "zlib";
+
 /* ДЗ 4 - работа с DOM */
 
 /*
@@ -11,8 +13,14 @@
    createDivWithText('loftschool') // создаст элемент div, поместит в него 'loftschool' и вернет созданный элемент
  */
 function createDivWithText(text) {
-}
+  let newElem = document.createElement('div');
+  let body = document.body;
 
+  newElem.textContent = text;
+  body.firstElementChild.appendChild(newElem);
+  return newElem;
+}
+createDivWithText('loftschool') ;
 /*
  Задание 2:
 
@@ -22,7 +30,15 @@ function createDivWithText(text) {
    prepend(document.querySelector('#one'), document.querySelector('#two')) // добавит элемент переданный первым аргументом в начало элемента переданного вторым аргументом
  */
 function prepend(what, where) {
+  parent.append(where);
+  parent.prepend(what);
+  return console.log(parent.children);
 }
+let parent = document.createElement('div');
+let first = document.createElement('div');
+let second = document.createElement('p');
+
+prepend(second, first);
 
 /*
  Задание 3:
@@ -44,7 +60,18 @@ function prepend(what, where) {
    findAllPSiblings(document.body) // функция должна вернуть массив с элементами div и span т.к. следующим соседом этих элементов является элемент с тегом P
  */
 function findAllPSiblings(where) {
+  const children = where.children;
+  let array = [];
+
+  for (let i = 0; i < children.length-1; i++) {
+    //console.log(children);
+    if (children[i].nextElementSibling.nodeName == 'P' ) {
+      array.push(children[i].nodeName);
+    }
+  }
+  return console.log(array);
 }
+findAllPSiblings(document.body);
 
 /*
  Задание 4:
@@ -66,7 +93,7 @@ function findAllPSiblings(where) {
 function findError(where) {
     var result = [];
 
-    for (var child of where.childNodes) {
+    for (var child of where.children) {
         result.push(child.innerText);
     }
 
@@ -86,7 +113,16 @@ function findError(where) {
    должно быть преобразовано в <div></div><p></p>
  */
 function deleteTextNodes(where) {
+  const children = where.childNodes;
+  for (const node of children) {
+    console.log(node);
+    children.forEach(node => {
+      node.nodeType != 1 && node.parentNode.removeChild(node)
+    });
+  }
 }
+
+deleteTextNodes(document.body);
 
 /*
  Задание 6:
@@ -100,7 +136,18 @@ function deleteTextNodes(where) {
    должно быть преобразовано в <span><div><b></b></div><p></p></span>
  */
 function deleteTextNodesRecursive(where) {
+  const children = where.childNodes;
+ 
+  for (let i = 0; i < children.length; i++) {
+   
+    if (children[i].nodeName == '#text') {
+      children[i].remove();
+    }
+  }
+  console.log(children);
 }
+
+deleteTextNodesRecursive(document.body);
 
 /*
  Задание 7 *:
