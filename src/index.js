@@ -14,10 +14,10 @@ import { brotliDecompressSync } from "zlib";
  */
 function createDivWithText(text) {
   let newElem = document.createElement('div');
-  let body = document.body;
+  //let body = document.body;
 
   newElem.textContent = text;
-  body.firstElementChild.appendChild(newElem);
+  //body.firstElementChild.appendChild(newElem);
   return newElem;
 }
 createDivWithText('loftschool') ;
@@ -30,9 +30,8 @@ createDivWithText('loftschool') ;
    prepend(document.querySelector('#one'), document.querySelector('#two')) // добавит элемент переданный первым аргументом в начало элемента переданного вторым аргументом
  */
 function prepend(what, where) {
-  parent.append(where);
-  parent.prepend(what);
-  return console.log(parent.children);
+  where.prepend(what);
+  return where;
 }
 let parent = document.createElement('div');
 let first = document.createElement('div');
@@ -59,17 +58,23 @@ prepend(second, first);
 
    findAllPSiblings(document.body) // функция должна вернуть массив с элементами div и span т.к. следующим соседом этих элементов является элемент с тегом P
  */
-function findAllPSiblings(where) {
+/*function findAllPSiblings(where) {
   const children = where.children;
   let array = [];
 
   for (let i = 0; i < children.length-1; i++) {
     //console.log(children);
-    if (children[i].nextElementSibling.nodeName == 'P' ) {
+    if (children[i].nextElementSibling.nodeName == 'P') {
       array.push(children[i].nodeName);
     }
   }
   return console.log(array);
+}*/
+function findAllPSiblings(where) {
+  let filtered = [...where.children].filter(({nextElementSibling}) => (
+    nextElementSibling && nextElementSibling.tagName === 'P'
+  ));
+  return filtered;
 }
 findAllPSiblings(document.body);
 
@@ -96,7 +101,6 @@ function findError(where) {
     for (var child of where.children) {
         result.push(child.innerText);
     }
-
     return result;
 }
 
@@ -117,7 +121,7 @@ function deleteTextNodes(where) {
   for (const node of children) {
     console.log(node);
     children.forEach(node => {
-      node.nodeType != 1 && node.parentNode.removeChild(node)
+      node.nodeType !== 1 && where.removeChild(node)
     });
   }
 }
@@ -140,8 +144,8 @@ function deleteTextNodesRecursive(where) {
  
   for (let i = 0; i < children.length; i++) {
    
-    if (children[i].nodeName == '#text') {
-      children[i].remove();
+    if (children[i].nodeName === '#text') {
+      where.removeChild(children[i]);
     }
   }
   console.log(children);
