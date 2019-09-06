@@ -14,10 +14,8 @@ import { brotliDecompressSync } from "zlib";
  */
 function createDivWithText(text) {
   let newElem = document.createElement('div');
-  //let body = document.body;
 
   newElem.textContent = text;
-  //body.firstElementChild.appendChild(newElem);
   return newElem;
 }
 createDivWithText('loftschool') ;
@@ -140,17 +138,17 @@ deleteTextNodes(document.body);
    должно быть преобразовано в <span><div><b></b></div><p></p></span>
  */
 function deleteTextNodesRecursive(where) {
-  const children = where.childNodes;
- 
-  for (let i = 0; i < children.length; i++) {
-   
-    if (children[i].nodeName === '#text') {
-      where.removeChild(children[i]);
-    }
+          
+  const children = [...where.childNodes];
+  for (let node of children) {
+      
+      if (node.nodeType === 3) {
+          where.removeChild(node);  
+      } else {
+          deleteTextNodesRecursive(node);
+      } 
   }
-  console.log(children);
 }
-
 deleteTextNodesRecursive(document.body);
 
 /*
