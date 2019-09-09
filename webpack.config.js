@@ -19,7 +19,7 @@ module.exports = {
         dnd: './src/dnd.js'
     },
     devServer: {
-        index: 'dnd.html'
+        index: 'dnd.html',
     },
     output: {
         filename: '[name].[hash].js',
