@@ -36,7 +36,7 @@ delayPromise(3);
  Пример:
    loadAndSortTowns().then(towns => console.log(towns)) // должна вывести в консоль отсортированный массив городов
  */
-function loadAndSortTowns() {
+/*function loadAndSortTowns() {
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
 
@@ -62,6 +62,29 @@ function loadAndSortTowns() {
     }   
   });
   }) 
+}*/
+function loadAndSortTowns() {
+  return new Promise((resolve, reject) => {
+      fetch('https://raw.githubusercontent.com/smelukov/citiesTest/master/cities.json')
+        .then(response => {
+          if(response.status >= 400) {
+            return Promise.reject();
+          } return response.json(); 
+        })
+        .then(towns => {
+          towns.sort((a, b) => {
+            let nameA=a.name,
+                nameB=b.name;
+            if (nameA < nameB) 
+              return -1;
+            if (nameA > nameB)
+              return 1;
+            return 0; 
+          })
+          resolve(towns); 
+        })
+        .catch(() => console.error('Something is wrong'));
+    });
 }
 loadAndSortTowns().then(towns => console.log(towns));
 
