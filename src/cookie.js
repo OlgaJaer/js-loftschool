@@ -49,4 +49,55 @@ filterNameInput.addEventListener('keyup', function() {
 
 addButton.addEventListener('click', () => {
     // здесь можно обработать нажатие на кнопку "добавить cookie"
+    const name = addNameInput.value;
+    const value = addValueInput.value;
+    //const filter = filterNameInput.value;
+
+    if (name) {
+    document.cookie = `${name}=${value}`;
+    addRowTable(name, value);
+    name.value = '';
+    value.value = '';
+    }
 });
+
+function isMatching(full, chunk) {
+  if (full.toLowerCase().indexOf(chunk.toLowerCase()) !== -1) {
+    return true;
+  } 
+  return false;   
+}	
+
+function parseCookie() {
+let cookie = document.cookie.split('; ').reduce((prev, current) => {
+  const [name, value] = current.split('=');
+  prev[name] = value;
+  return prev;
+}, {});
+return cookie;
+}
+
+function addRowTable(name, value) {
+  const tr = document.createElement('tr');
+  const tdName = document.createElement('td');
+  const tdValue = document.createElement('td');
+  const tdDelete = document.createElement('td');
+  const button = document.createElement('button');
+
+  tdName.innerText = name;
+  tdValue.innerText = value;
+  button.innerText = 'Удалить';
+
+  tdDelete.appendChild(button);
+  tr.appendChild(tdName);
+  tr.appendChild(tdValue);
+  tr.appendChild(tdDelete);
+  listTable.appendChild(tr);
+  //return (name, value);
+}
+
+listTable.addEventListener('click', e => {
+  let rowDelete = e.target.closest('tr');
+  rowDelete.parentNode.removeChild(rowDelete);
+}); 
+ 
